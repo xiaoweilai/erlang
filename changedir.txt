@@ -1,0 +1,3 @@
+cd("e:/erlang").
+
+cd("e:/erlang/code").
