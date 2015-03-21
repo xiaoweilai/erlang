@@ -6,8 +6,27 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
+-module(nif_test3).
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+-export([load_lib/0, test/0, alloc/1, set/3, get/2]).
+-on_load(load_lib/0).
+
+load_lib() ->
+    Z = erlang:load_nif("./nif_test3", 0),
+    erlang:display({z,Z}),
+    Z.
+
+test() ->
+    K = alloc(256),
+    set(K, 20, 200),
+    J = get(K, 20).
+  
+
+alloc(X) ->
+      "NIF library not loaded".
+
+set(X, Y, Z) ->
+      "NIF library not loaded".
+
+get(X, Y) ->
+    "NIF library not loaded".

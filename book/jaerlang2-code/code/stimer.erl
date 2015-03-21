@@ -6,8 +6,15 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
+-module(stimer).
+-export([start/2, cancel/1]).
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+start(Time, Fun) -> spawn(fun() -> timer(Time, Fun) end).
+cancel(Pid) -> Pid ! cancel.
+timer(Time, Fun) ->
+    receive
+	cancel ->
+	    void
+    after Time ->
+	    Fun()
+    end.

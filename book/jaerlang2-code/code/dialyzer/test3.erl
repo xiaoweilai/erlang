@@ -6,8 +6,12 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
+-module(test3).
+-export([test/0, factorial/1]).
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+test() -> factorial(-5).
+
+factorial(0) -> 1;
+factorial(N) -> N*factorial(N-1).
+ 
+    

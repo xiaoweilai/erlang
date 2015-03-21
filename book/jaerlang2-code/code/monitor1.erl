@@ -6,8 +6,22 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
+-module(monitor1).
+-export([start/1]).
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+start(Pid) ->
+    spawn(fun() -> run(Pid) end).
+
+run(Pid) ->
+    link(Pid),
+    loop(0).
+
+loop(N) ->
+    io:format("~p N=~p~n",[?MODULE, N]),
+    receive
+    after 2000 ->
+	loop(N+1)
+    end.
+       
+			 
+			

@@ -6,8 +6,13 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
+-module(geometry1).  
+-export([test/0, area/1]). 
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+test() ->
+    12  = area({rectangle, 3, 4}),
+    144 = area({square, 12}),
+    tests_worked.
+
+area({rectangle, Width, Height}) -> Width * Height;
+area({square, Side})             -> Side * Side.

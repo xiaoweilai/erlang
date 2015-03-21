@@ -6,8 +6,20 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
+-module(types1).
+-export([f1/1, f2/1, f3/1]).
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+f1({H,M,S}) ->
+    (H+M*60)*60+S.
+
+f2({H,M,S}) when is_integer(H) ->
+    (H+M*60)*60+S.
+
+f3({H,M,S}) ->
+    print(H,M,S),
+    (H+M*60)*60+S.
+
+print(H,M,S) ->
+    Str = integer_to_list(H) ++ ":" ++ integer_to_list(M) ++ ":" ++
+	integer_to_list(S),
+    io:format("~s", [Str]).

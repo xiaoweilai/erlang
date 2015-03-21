@@ -6,8 +6,10 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
+-module(abc).
+-export([a/2, b/1]).
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+a(X, Y) -> c(X) + a(Y).
+a(X) -> 2 * X.
+b(X) -> X * X.
+c(X) -> 3 * X.

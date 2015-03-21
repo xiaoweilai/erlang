@@ -6,8 +6,15 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
-
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+-module(server5).
+-export([start/0, rpc/2]).
+start() -> spawn(fun() -> wait() end).
+wait() ->
+    receive
+	{become, F} -> F()
+    end.
+rpc(Pid, Q) ->
+    Pid ! {self(), Q},
+    receive
+	{Pid, Reply} -> Reply
+    end.

@@ -6,8 +6,25 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
+-module(ctemplate).
+-compile(export_all).
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+start() ->
+    spawn(?MODULE, loop, []).
+
+rpc(Pid, Request) ->
+    Pid ! {self(), Request},
+    receive
+	{Pid, Response} ->
+	    Response
+    end.
+	    
+loop(X) ->
+    receive
+	Any ->
+	    io:format("Received:~p~n",[Any]),
+	    loop(X)
+    end.
+
+
+		  

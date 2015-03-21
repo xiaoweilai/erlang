@@ -6,8 +6,9 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
+-module(convert2).
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+-export([convert/2]).
+
+convert(Yards, meters) -> 0.9144 * Yards;
+convert(Meters, yards) -> 1.0936133 * Meters.

@@ -6,8 +6,17 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
+-module(error1).
+-export([start/0]).
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+start() -> loop(0).
+
+loop(M) ->
+    io:format("error1 M=~p~n",[M]),
+    receive
+	K ->
+	    1/K,
+	    loop(M+1)
+    after 500 ->
+	    loop(M+1)
+    end.

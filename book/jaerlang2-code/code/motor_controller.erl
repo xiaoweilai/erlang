@@ -6,8 +6,12 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
+-module(motor_controller).
+-export([add_event_handler/0]).
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+add_event_handler() ->
+    event_handler:add_handler(errors, fun controller/1).
+controller(too_hot) ->
+    io:format("Turn off the motor~n");
+controller(X) ->
+    io:format("~w ignored event: ~p~n",[?MODULE, X]).

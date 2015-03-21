@@ -6,8 +6,11 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
+-module(math2).   
+-export([map/2]). 
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+map(_, [])    -> [];  %% (1)
+map(F, [H|T]) -> [F(H)|map(F, T)]. %% (2)
+
+    
+

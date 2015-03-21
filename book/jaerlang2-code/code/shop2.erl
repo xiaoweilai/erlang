@@ -6,8 +6,10 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
+-module(shop2).
 -export([total/1]).
+-import(lists, [map/2, sum/1]).
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+total(L) ->
+    sum(map(fun({What, N}) -> shop:cost(What) * N end, L)).
+

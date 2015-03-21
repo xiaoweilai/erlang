@@ -6,8 +6,20 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
+-module(test1).
+-export([foo/1]).
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+zip(X) ->
+    % this is zip
+    Y = "abc",
+    case X of
+	1 ->
+	    2
+    end.
+
+foo(X) ->
+    bar(X).
+
+bar(X) ->
+    42.
+ 

@@ -6,8 +6,19 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
+-module(a).
+-compile(export_all).
+    
+ start(Tag) ->
+    spawn(fun() -> loop(Tag) end).
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+loop(Tag) ->
+    sleep(),
+    Val = b:x(),
+    io:format("Vsn1 (~p) b:x() = ~p~n",[Tag, Val]),
+    loop(Tag).
+
+sleep() ->
+    receive
+	after 3000 -> true
+    end.

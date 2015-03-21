@@ -6,8 +6,11 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
+-module(bad).
+-export([test/0]).
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+-spec test() -> integer().
+test() ->
+    X = a:make_rich_text("hello"),
+    length([C || {_,C} <- X]).
+			    

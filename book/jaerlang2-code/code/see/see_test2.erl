@@ -6,8 +6,10 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
+-module(see_test2).
+-export([main/0]).
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+main() ->
+    erlang:display({about_to_call,my_code}),
+    2000 = my_code:double(1000),
+    see:write("see_test2 worked\n").

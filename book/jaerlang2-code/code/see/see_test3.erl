@@ -6,8 +6,17 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
+-module(see_test3).
+-export([main/0]).
+-import(see, [read/0, write/1]).
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+main() -> loop().
+
+loop() ->
+    case read() of
+        eof ->
+            true;
+        {ok, X} ->
+            write([X]),
+            loop()
+    end.

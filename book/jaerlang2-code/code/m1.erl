@@ -6,8 +6,17 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
+-module(m1).
+-export([loop/1]).
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+-ifdef(debug_flag).
+-define(DEBUG(X), io:format("DEBUG ~p:~p ~p~n",[?MODULE, ?LINE, X])).
+-else.
+-define(DEBUG(X), void).
+-endif.
+
+loop(0) ->
+    done;
+loop(N) ->  
+    ?DEBUG(N),
+    loop(N-1).

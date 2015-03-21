@@ -6,8 +6,14 @@
 %%  We make no guarantees that this code is fit for any purpose. 
 %%  Visit http://www.pragmaticprogrammer.com/titles/jaerlang2 for more book information.
 %%---
--module(shop1).
--export([total/1]).
+-module(math3).         
+-export([area/1]).
+-import(math, [pi/0]).
 
-total([{What, N}|T]) -> shop:cost(What) * N + total(T);
-total([])            -> 0.
+area({circle, Radius}) -> 
+    pi() * squared(Radius);
+area({triangle, A, B, C}) ->
+    S = (A+B+C)/2,
+    math:sqrt(S*(S-A)*(S-B)*(S-C)).
+
+squared(X) -> X*X.
