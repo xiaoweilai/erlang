@@ -1,3 +1,15 @@
 cd("e:/erlang").
 
 cd("e:/erlang/code").
+
+4> cd ("e:/git/erlang/code").
+e:/git/erlang/code
+ok
+5> pwd().
+e:/git/erlang/code
+ok
+6>
+
+
+
+
