@@ -96,9 +96,17 @@ is_func_point(Tuple, func_point) ->
 %%fun para list
 is_funparalist_val([], Dot)  -> ");";
 is_funparalist_val([H|T], Dot) ->
-	Q = H ++ Dot,
-	io:format("~s~n",[Q]),
-	Q ++ is_funparalist_val(T, Dot).
+	case 1 =:= length([H|T]) of
+		true ->
+			Q = H ,
+			io:format("~s~n",[Q]),
+			Q ++ is_funparalist_val(T, Dot);
+		false ->
+			Q = H ++ Dot ++ " ",
+			io:format("~s~n",[Q]),
+			Q ++ is_funparalist_val(T, Dot)		
+	end.
+
 
 
 
