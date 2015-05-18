@@ -75,8 +75,8 @@ transErLan2CLan([H|T])  ->
 	case (Type) of
 		enum          	-> is_enum(Para,enum) + transErLan2CLan(T);
 		macro    		-> is_macro(Para,macro) + transErLan2CLan(T);
-		struct 			-> bind(Para, struct) + transErLan2CLan(T);
-		func_point 		-> bind(Para, func_point) + transErLan2CLan(T);
+		struct 			-> is_struct(Para, struct) + transErLan2CLan(T);
+		func_point 		-> is_func_point(Para, func_point) + transErLan2CLan(T);
 		func_prototype 	-> bind(Para, func_prototype) + transErLan2CLan(T)
 	end.
 
@@ -84,21 +84,49 @@ transErLan2CLan([H|T])  ->
 bind(T,Type) ->
 	[Type].
 
+%%func_point
+is_func_point(Tuple, func_point) ->
+	{RetType, FunPtName, L} = Tuple,
+	io:format("RetType:~s~n",[RetType]),
+	io:format("FunPtName:~s~n",[FunPtName]),
+	Q = RetType ++" (*" ++ FunPtName ++ ")("  ++ is_funparalist_val(L,","),
+	io:format("Q:~s~n",[Q]),
+	[Q].
+
+%%fun para list
+is_funparalist_val([], Dot)  -> ");";
+is_funparalist_val([H|T], Dot) ->
+	Q = H ++ Dot,
+	io:format("~s~n",[Q]),
+	Q ++ is_funparalist_val(T, Dot).
+
+
+
+
+%% struct 和 enum 可以合并为一个
+%%struct
+is_struct(Tuple,struct) ->
+	{Name,L}  = Tuple,
+	io:format("Name:~s~n",[Name]),
+	Q = "struct " ++ Name ++ "{" ++ "\n" ++ is_list_val(L,";"),
+	io:format("Q:~s~n",[Q]),
+	[Q].
 
 %%enum
 is_enum(Tuple, enum) -> 
 	{Name ,L} = Tuple,
 	io:format("Name:~s~n",[Name]),
-	Q = "enum " ++ Name ++ "{" ++ is_enum_val(L),
+	Q = "enum " ++ Name ++ "{" ++ "\n" ++ is_list_val(L,","),
 	io:format("Q:~s~n",[Q]),
 	[Q].
 
-%%enum val list
-is_enum_val([])  -> "};";
-is_enum_val([H|T]) ->
-	Q = H ++ ", ",
+
+%%value list
+is_list_val([], Dot)  -> "};";
+is_list_val([H|T], Dot) ->
+	Q = H ++ Dot ++ "\n",
 	io:format("~s~n",[Q]),
-	Q ++ is_enum_val(T).
+	Q ++ is_list_val(T, Dot).
 
 
 
