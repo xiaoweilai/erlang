@@ -2,8 +2,7 @@
 
 -module(file_example).
 
--export([write/2, read/1, readNewFileNameInFile/1, transErLan2CLan/1,bind/2,
-	is_macro/1]).
+-export([write/2, read/1, readNewFileNameInFile/1]).
 
 %% -*- coding: utf-8 -*-
 %% -*- coding: latin-1 -*-
@@ -74,8 +73,8 @@ transErLan2CLan([H|T])  ->
 	{Type,Para} = H,
 	io:format("~s~n",[Type]),
 	case (Type) of
-		enum          	-> bind(Para, enum) + transErLan2CLan(T);
-		macro    		-> is_macro(Para) + transErLan2CLan(T);
+		enum          	-> is_enum(Para,enum) + transErLan2CLan(T);
+		macro    		-> is_macro(Para,macro) + transErLan2CLan(T);
 		struct 			-> bind(Para, struct) + transErLan2CLan(T);
 		func_point 		-> bind(Para, func_point) + transErLan2CLan(T);
 		func_prototype 	-> bind(Para, func_prototype) + transErLan2CLan(T)
@@ -85,13 +84,33 @@ transErLan2CLan([H|T])  ->
 bind(T,Type) ->
 	[Type].
 
+
+%%enum
+is_enum(Tuple, enum) -> 
+	{Name ,L} = Tuple,
+	io:format("Name:~s~n",[Name]),
+	Q = "enum " ++ Name ++ "{" ++ is_enum_val(L),
+	io:format("Q:~s~n",[Q]),
+	[Q].
+
+%%enum val list
+is_enum_val([])  -> "};";
+is_enum_val([H|T]) ->
+	Q = H ++ ", ",
+	io:format("~s~n",[Q]),
+	Q ++ is_enum_val(T).
+
+
+
+
+
 %%macro
-is_macro([])    -> [];
-is_macro([H|T]) ->
+is_macro([], macro)    -> [];
+is_macro([H|T], macro) ->
 	{Name, Value} = H,
 	Q = "#define " ++ Name ++ "  " ++ Value ,%%++ "\n",
 	io:format("~s~n",[Q]),
-	[Q] + is_macro(T).
+	[Q] ++ is_macro(T, macro).
 
 
 
