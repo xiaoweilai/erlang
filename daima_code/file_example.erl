@@ -2,7 +2,8 @@
 
 -module(file_example).
 
--export([write/2, read/1, readline/1]).
+-export([write/2, read/1, readNewFileNameInFile/1, transErLan2CLan/1,bind/2,
+	is_macro/1]).
 
 %% -*- coding: utf-8 -*-
 %% -*- coding: latin-1 -*-
@@ -31,16 +32,68 @@ read(FileName) when is_list(FileName) ->
 
 %% --------------------
 %% 读取传入文件名中内容对应的文件
-%% read(FileName) -> binary()
-%% FileName = string()
+%% read(FileName) -> IOText()
+%% Get NewFileName = string()
 %% --------------------
-readline(FileName) when is_list(FileName) ->
+readNewFileNameInFile(FileName) when is_list(FileName) ->
 	{ok, F} = file:open(FileName,read),
+	%%读取code2.spec中的文件名
 	{ok, {file_name, NewFileName}}=io:read(F,''),
 	%%{file_name, _} = io:read(F,''),
+	%%读取第二行，头标识
+	{ok,{header_start,std}} = io:read(F,''),
+	%%读取内容
+	{ok,{content,L}} = io:read(F,''),
+	Content = transErLan2CLan(L),
+
+	%%结束标识
+	{ok,{header_end,std}} = io:read(F,''),
+
+	%%文件结束
+	eof = io:read(F,''),
 	file:close(F),
+
+	%%写文件翻译内容
+	io:format("Write Cotent To ~s~n",[NewFileName]),
+	write(Content,NewFileName),
+
+
 	%%io:format("~s~n", [NewFileName]),
-	{ok,NewFileName}.
+	NewFileName.
+
+
+%% --------------------
+%% 翻译Erlang格式内容到C语言
+%% read(FileName) -> IOText()
+%% Get NewFileName = string()
+%% --------------------
+%%transErLan2CLan2(L) ->
+  %%  transErLan2CLan(L, [], []).
+transErLan2CLan([])  -> [];
+transErLan2CLan([H|T])  ->
+	{Type,Para} = H,
+	io:format("~s~n",[Type]),
+	case (Type) of
+		enum          	-> bind(Para, enum) + transErLan2CLan(T);
+		macro    		-> is_macro(Para) + transErLan2CLan(T);
+		struct 			-> bind(Para, struct) + transErLan2CLan(T);
+		func_point 		-> bind(Para, func_point) + transErLan2CLan(T);
+		func_prototype 	-> bind(Para, func_prototype) + transErLan2CLan(T)
+	end.
+
+
+bind(T,Type) ->
+	[Type].
+
+%%macro
+is_macro([])    -> [];
+is_macro([H|T]) ->
+	{Name, Value} = H,
+	Q = "#define " ++ Name ++ "  " ++ Value ,%%++ "\n",
+	io:format("~s~n",[Q]),
+	[Q] + is_macro(T).
+
+
 
 
 get_local_path() ->
