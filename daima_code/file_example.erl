@@ -77,12 +77,21 @@ transErLan2CLan([H|T])  ->
 		macro    		-> is_macro(Para,macro) + transErLan2CLan(T);
 		struct 			-> is_struct(Para, struct) + transErLan2CLan(T);
 		func_point 		-> is_func_point(Para, func_point) + transErLan2CLan(T);
-		func_prototype 	-> bind(Para, func_prototype) + transErLan2CLan(T)
+		func_prototype 	-> is_func_prototype(Para, func_prototype) + transErLan2CLan(T)
 	end.
 
 
 bind(T,Type) ->
 	[Type].
+
+%%func_prototype
+is_func_prototype(Tuple, func_prototype) ->
+	{RetType, FunName, L} = Tuple,
+	io:format("RetType:~s~n",[RetType]),
+	io:format("FunName:~s~n",[FunName]),
+	Q = RetType ++" " ++ FunName ++ "("  ++ is_funparalist_val(L,","),
+	io:format("Q:~s~n",[Q]),
+	[Q].
 
 %%func_point
 is_func_point(Tuple, func_point) ->
@@ -99,11 +108,11 @@ is_funparalist_val([H|T], Dot) ->
 	case 1 =:= length([H|T]) of
 		true ->
 			Q = H ,
-			io:format("~s~n",[Q]),
+			%%io:format("~s~n",[Q]),
 			Q ++ is_funparalist_val(T, Dot);
 		false ->
 			Q = H ++ Dot ++ " ",
-			io:format("~s~n",[Q]),
+			%%io:format("~s~n",[Q]),
 			Q ++ is_funparalist_val(T, Dot)		
 	end.
 
