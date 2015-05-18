@@ -44,6 +44,7 @@ readNewFileNameInFile(FileName) when is_list(FileName) ->
 	%%读取内容
 	{ok,{content,L}} = io:read(F,''),
 	Content = transErLan2CLan(L),
+	io:format("Cotent To ~s~n",[Content]),
 
 	%%结束标识
 	{ok,{header_end,std}} = io:read(F,''),
@@ -53,7 +54,7 @@ readNewFileNameInFile(FileName) when is_list(FileName) ->
 	file:close(F),
 
 	%%写文件翻译内容
-	io:format("Write Cotent To ~s~n",[NewFileName]),
+	io:format("Write Cotent To File: ~s~n",[NewFileName]),
 	write(Content,NewFileName),
 
 
@@ -73,11 +74,14 @@ transErLan2CLan([H|T])  ->
 	{Type,Para} = H,
 	io:format("~s~n",[Type]),
 	case (Type) of
-		enum          	-> is_enum(Para,enum) + transErLan2CLan(T);
-		macro    		-> is_macro(Para,macro) + transErLan2CLan(T);
-		struct 			-> is_struct(Para, struct) + transErLan2CLan(T);
-		func_point 		-> is_func_point(Para, func_point) + transErLan2CLan(T);
-		func_prototype 	-> is_func_prototype(Para, func_prototype) + transErLan2CLan(T)
+		enum          	-> 
+			Q = is_enum(Para,enum) ++ transErLan2CLan(T),
+			io:format("--------:~s~n",[Q]),
+			Q;
+		macro    		-> is_macro(Para,macro) ++ transErLan2CLan(T);
+		struct 			-> is_struct(Para, struct) ++ transErLan2CLan(T);
+		func_point 		-> is_func_point(Para, func_point) ++ transErLan2CLan(T);
+		func_prototype 	-> is_func_prototype(Para, func_prototype) ++ transErLan2CLan(T)
 	end.
 
 
